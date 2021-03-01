@@ -7,7 +7,8 @@ urls = {
 if not(fs.exists("Start")) then
   file = fs.open("startup.lua", "w")
     file.write("shell.run(\"Installer\") \n")
-    file.write("shell.run(\"Start\")")
+    file.write("shell.run(\"Start\")\n")
+    file.write("os.reboot()")
     file.close()
     shell.run("pastebin get 4nRg9CHU json")
 end
