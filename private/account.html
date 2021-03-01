@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BRITANNIA Dashboard (Admin)</title>
+    <link rel="stylesheet" href="./materialize/css/materialize.css">
+    <script src="./materialize/js/materialize.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            M.AutoInit();
+        });
+    </script>
+</head>
+
+<body style="background-color: #263238;">
+    <div class="row">
+        <div class="col s2">
+            <ul id="slide-out" class="sidenav sidenav-fixed z-depth-3" style="background-color: #37474f;">
+                <li>
+                    <div class="user-view">
+                        <div class="background" style="background-color: #455a64"></div>
+                        <a><img class="circle" src="https://minotar.net/helm/MHF_Steve/100.png" onclick="accountLogin()"></a>
+                        <a><span class="white-text name" id="playername">Steve</span></a>
+                        <a><span class="white-text email"
+                                style="font-size: 12px;" id="playeruuid">8667ba71-b85a-4004-af54-457a9734eed7</span></a>
+                    </div>
+                </li>
+                <li><a href="#!" style="color: white" onclick="openTab('security')">Security</a></li>
+                <li>
+                    <div class="divider"></div>
+                </li>
+                <li><a style="color: white" onclick="mainLogin()">Back</a></li>
+            </ul>
+        </div>
+
+        <div id="security" class="col s10">
+            <h2 class="white-text">Your activation code</h2>
+            <h4 class="white-text" id="keyText">000 000 000</h4>
+            <a class="waves-effect waves-light btn green" id="genButton" onclick="genKey()">generate new code</a>
+            <br><br><br>
+            <h2 class="white-text">Change Password</h2>
+            <div class="row">
+                <form class="col s12">
+                    <div class="row">
+                        <div class="input-field col s4">
+                            <input id="password_1" type="password" class="validate">
+                            <label for="password_1">New password</label>
+                            <a class="waves-effect waves-light btn green modal-trigger" href="#modal1">Change
+                                password</a>
+                        </div>
+                        <div class="input-field col s4">
+                            <input id="password_2" type="password" class="validate">
+                            <label for="password_2">Repeat password</label>
+                        </div>
+                        <div class="input-field col s4">
+                            <input id="password_3" type="password" class="validate">
+                            <label for="password_3">Old password</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div id="modal1" class="modal">
+                <div class="modal-content">
+                    <h4>Change password?</h4>
+                    <p>Are you sure you want to change your password?
+                        <g style="color: orangered; font-weight: bolder;">You can not undo it!</g>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <a class="modal-close waves-effect waves-green btn-flat" onclick="changePwd()">Agree</a>
+                    <a href="#!" class="modal-close waves-effect waves-red btn-flat">Decline</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        var x2 = "security"
+        //document.getElementById("security").style.display = "none";
+
+        function openTab(x) {
+            document.getElementById(x).style.display = "unset";
+            document.getElementById("security").style.opacity = "0%";
+            document.getElementById(x2).animate([{
+                opacity: '100%'
+            }, {
+                opacity: '0%'
+            }], {
+                duration: 450,
+                iterations: 1
+            });
+
+            setTimeout(() => {
+                x2 = x;
+                document.getElementById(x).animate([{
+                    opacity: '0%'
+                }, {
+                    opacity: '100%'
+                }], {
+                    duration: 500,
+                    iterations: 1
+                });
+                document.getElementById("security").style.display = "none";
+                document.getElementById(x).style.display = "unset";
+                document.getElementById(x).style.opacity = "100%";
+            }, 450);
+        }
+
+        function genKey() {
+            fetch("/account/reg")
+                .then(response => response.json())
+                .then(function (data) {
+                    kt.innerHTML = data.key.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+                });
+        }
+        let kt = document.getElementById("keyText");
+        fetch("/account/key")
+            .then(response => response.json())
+            .then(function (data) {
+                if(data.key)
+                    kt.innerHTML = data.key.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+            });
+
+        function mainLogin() {
+            fetch("/page/main").then(function(data) {
+                console.log(data)
+                location.reload()
+            });
+        }
+
+        function changePwd() {
+            let old = document.querySelector("#password_3");
+            let newvf = document.querySelector("#password_2");
+            let newpw = document.querySelector("#password_1");
+            if(!(newvf.value == newpw.value)) {
+                console.log("wrong !")
+                return
+            }
+                
+            let form = {
+                "old": old.value,
+                "new": newpw.value
+            }
+            console.log(form)
+            fetch("/account/changePwd", {
+                    method: "POST",
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(form)
+                })
+                .then(response => response.json())
+                .then(function(data) {
+                    console.log(data)
+                });
+        }
+
+        let playername = document.getElementById("playername");
+        let playeruuid = document.getElementById("playeruuid");
+        fetch("/user")
+        .then(response => response.json())
+        .then(function(data) {
+            playername.innerHTML = data.username;
+            playeruuid.innerHTML = data.playeruuid;
+        });
+    </script>
+    <!--<script src="admin.js"></script>-->
+</body>
+
+</html>

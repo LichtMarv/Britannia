@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BRITANNIA Dashboard (Admin)</title>
+    <link rel="stylesheet" href="./materialize/css/materialize.css">
+    <script src="./materialize/js/materialize.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            M.AutoInit();
+        });
+    </script>
+</head>
+
+<body style="background-color: #263238;">
+    <div class="row">
+        <div class="col s2">
+            <ul id="slide-out" class="sidenav sidenav-fixed z-depth-3" style="background-color: #37474f;">
+                <li>
+                    <div class="user-view">
+                        <div class="background" style="background-color: #455a64"></div>
+                        <a><img class="circle" src="https://minotar.net/helm/MHF_Steve/100.png" onclick="accountLogin()"></a>
+                        <a><span class="white-text name" id="playername">Steve</span></a>
+                        <a><span class="white-text email"
+                                style="font-size: 12px;" id="playeruuid">8667ba71-b85a-4004-af54-457a9734eed7</span></a>
+                    </div>
+                </li>
+                <li><a href="#!" style="color: white" onclick="openTab('power')">Power Managment</a></li>
+                <li><a href="#!" style="color: white" onclick="openTab('cords')">Player Coordinates</a></li>
+                <li><a href="#!" style="color: white" onclick="openTab('minebey')">Minebey</a></li>
+                <li><a href="#!" style="color: white" onclick="openTab('accounts')">Account Manager</a></li>
+                <li>
+                    <div class="divider"></div>
+                </li>
+                <li><a style="color: white" onclick="mainLogin()">Back to main page</a></li>
+                <li><a style="color: white" onclick="">Log out</a></li>
+            </ul>
+        </div>
+
+        <div id="power" class="col s10">
+            <div id="chart_div" style="width: 85%; height: 500px; position: fixed; left: 205px; top: -22px"></div>
+            <a class="waves-effect waves-light btn green" style="position: fixed; left: 630px; top: 22px" onclick=""><i
+                class="material-icons">refresh</i></a>
+        </div>
+
+        <div id="cords" style="opacity: 50%;" class="col s10">
+            <div class="row">
+                <div class="col s12">
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input type="text" id="autocomplete-input" class="autocomplete no-autoinit white-text">
+                            <label for="autocomplete-input">Playername</label>
+                        </div>
+                        <div class="col s3" style="position: relative; top: 20px">
+                            <a class="waves-effect waves-light btn green" id="getbutton">get</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <table style="color: white">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>X</th>
+                        <th>Y</th>
+                        <th>Z</th>
+                    </tr>
+                </thead>
+
+                <tbody id="playertable">
+                    <tr>
+                        <td>N1</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="minebey" class="col s10">
+        </div>
+
+        <div id="accounts" class="col s10">
+        </div>
+    </div>
+
+    <script>
+        google.charts.load('current', {
+            'packages': ['corechart']
+        });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Minutes', 'Maximum energy', 'Energy available'],
+                ['30', 6400000, 1500],
+                ['25', 6400000, 1500],
+                ['20', 6400000, 1500],
+                ['15', 6400000, 1500],
+                ['10', 6400000, 1500],
+                ['05', 6400000, 1500],
+                ['00', 6400000, 1500]
+            ]);
+
+            var options = {
+                title: "Power Usage (in FE) - " + Math.round(1500 / 640000 * 100) + "%",
+                vAxis: {
+                    minValue: 0,
+                    textStyle: {
+                        color: '#ffffff'
+                    }
+                },
+                hAxis: {
+                    textStyle: {
+                        color: '#ffffff'
+                    }
+                },
+                backgroundColor: '#263238',
+                titleTextStyle: {
+                    color: "#ffffff"
+                },
+                animation: {
+                    startup: true
+                },
+                legend: {
+                    textStyle: {
+                        color: "#ffffff"
+                    }
+                }
+            };
+
+            var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+        }
+
+        var x2 = "power"
+        document.getElementById("cords").style.display = "none";
+        document.getElementById("minebey").style.display = "none";
+        document.getElementById("accounts").style.display = "none";
+
+        function openTab(x) {
+            document.getElementById(x).style.display = "unset";
+            document.getElementById("power").style.opacity = "0%";
+            document.getElementById("cords").style.opacity = "0%";
+            document.getElementById("minebey").style.opacity = "0%";
+            document.getElementById("accounts").style.opacity = "0%";
+            document.getElementById(x2).animate([{
+                opacity: '100%'
+            }, {
+                opacity: '0%'
+            }], {
+                duration: 450,
+                iterations: 1
+            });
+
+            setTimeout(() => {
+                x2 = x;
+                document.getElementById(x).animate([{
+                    opacity: '0%'
+                }, {
+                    opacity: '100%'
+                }], {
+                    duration: 500,
+                    iterations: 1
+                });
+                document.getElementById("power").style.display = "none";
+                document.getElementById("cords").style.display = "none";
+                document.getElementById("minebey").style.display = "none";
+                document.getElementById("accounts").style.display = "none";
+                document.getElementById(x).style.display = "unset";
+                document.getElementById(x).style.opacity = "100%";
+            }, 450);
+        }
+
+        function mainLogin() {
+            fetch("/page/main").then(function(data) {
+                console.log(data)
+                location.reload()
+            });
+        }
+
+        let playername = document.getElementById("playername");
+        let playeruuid = document.getElementById("playeruuid");
+        fetch("/user")
+        .then(response => response.json())
+        .then(function(data) {
+            playername.innerHTML = data.username;
+            playeruuid.innerHTML = data.playeruuid;
+        });
+    </script>
+    <script src="admin.js"></script>
+</body>
+
+</html>

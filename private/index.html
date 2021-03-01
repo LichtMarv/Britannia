@@ -1,0 +1,87 @@
+if (fs.exists("saves")) then<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BRITANNIA</title>
+    <link rel="stylesheet" href="./materialize/css/materialize.css">
+    <script src="./materialize/js/materialize.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body style="background-color: #263238;">
+    <ul id="slide-out" class="sidenav sidenav-fixed z-depth-3" style="background-color: #37474f;">
+        <li>
+            <div class="user-view">
+                <div class="background" style="background-color: #455a64"></div>
+                <a><img class="circle" src="https://minotar.net/helm/MHF_Steve/100.png"></a>
+                <a><span class="white-text name" id="playername">Steve</span></a>
+                <a><span class="white-text email"
+                        style="font-size: 12px;" id="playeruuid">8667ba71-b85a-4004-af54-457a9734eed7</span></a>
+            </div>
+        </li>
+        <li><a href="#!" style="color: white">Minebey Prices</a></li>
+        <li>
+            <div class="divider"></div>
+        </li>
+        <li><a href="#!" style="color: white" onclick="AdminLogin()">Admin</a></li>
+        <li><a href="#!" style="color: white" onclick="accountLogin()">Account</a></li>
+        <li><a href="#!" style="color: white">Logout</a></li>
+    </ul>
+
+    <div id="prices">
+        <!--Minebey Prices-->
+        <table style="color: white; position: relative; left: 350px; width: 70%;">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Item Price</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>512x Oak planks</td>
+                    <td>4 Diamonds</td>
+                </tr>
+                <tr>
+                    <td>1x Computer</td>
+                    <td>3 Diamonds</td>
+                </tr>
+                <tr>
+                    <td>1x Pocket Computer</td>
+                    <td>1 Diamonds</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            M.AutoInit();
+        });
+        var playername = document.getElementById("playername");
+        var playeruuid = document.getElementById("playeruuid");
+        async function AdminLogin() {
+            fetch("/page/admin").then(function(data) {
+                console.log(data)
+                location.reload()
+            });
+        }
+        function accountLogin() {
+            fetch("/page/account").then(function(data) {
+                console.log(data)
+                location.reload()
+            });
+        }
+        fetch("/user")
+            .then(response => response.json())
+            .then(function(data) {
+                playername.innerHTML = data.username;
+                playeruuid.innerHTML = data.playeruuid;
+            });
+    </script>
+</body>
+
+</html>
