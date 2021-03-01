@@ -2,7 +2,7 @@
 -- Automatically downloads ComputerCraft programs to a computer
 
 urls = {
-    {"Start",         "https://raw.githubusercontent.com/LichtMarv/Britannia/main/lua/Start.lua"}--,
+    {"Start",         "https://raw.githubusercontent.com/LichtMarv/Britannia/master/lua/Start.lua"}--,
     {"Installer",     "https://raw.githubusercontent.com/???/???.lua"}
 }
 if not(fs.exists("Start")) then

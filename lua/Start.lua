@@ -5,7 +5,7 @@ local id = os.getComputerID()
 local IsTablet=false
 local config
 
-    request = http.get("https://raw.githubusercontent.com/LichtMarv/Britannia/main/lua/Installer.lua")
+    request = http.get("https://raw.githubusercontent.com/LichtMarv/Britannia/master/lua/Installer.lua")
     data = request.readAll()
 
     if fs.exists("Installer") then
