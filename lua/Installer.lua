@@ -4,14 +4,15 @@
 urls = {
     {"Start",         "https://raw.githubusercontent.com/LichtMarv/Britannia/master/lua/Start.lua"}
 }
-if not(fs.exists("Start")) then
+--if not(fs.exists("Start")) then
+  fs.delete(startup.lua)
   file = fs.open("startup.lua", "w")
     file.write("shell.run(\"Installer\") \n")
     file.write("shell.run(\"Start\")\n")
     file.write("os.reboot()")
     file.close()
-    shell.run("pastebin get 4nRg9CHU json")
-end
+  --  shell.run("pastebin get 4nRg9CHU json")
+--end
 
 function download(name, url)
  
