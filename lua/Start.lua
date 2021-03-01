@@ -94,11 +94,12 @@ term.setTextColor(colors.lightBlue)
 print("Aktualisierun der Nutzerdaten")
 local response = http.get("http://purplepenguin.ddns.net:8500/cct/info/"..SessionKey.."/")
 local content = response.readAll()
-content=json.decode(content)
+print(content)
 if (content=="USER DOESNT EXIST!") then
     SessionKey=nil
     os.reboot()
 end
+content=json.decode(content)
 if  not (content.username==nil) then
     os.setComputerLabel("Computer von "..content.username)
 end
