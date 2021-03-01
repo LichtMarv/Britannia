@@ -86,7 +86,7 @@ if not SessionKey then
         term.setTextColor(colors.red)
         print("Registrierung des Computers Fehlgeschladen!")
         print("Bitte probiere es in ein paar Minuen noch mal")
-        -- os.reboot()
+        os.reboot()
     end
     print("")
 end

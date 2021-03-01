@@ -2,8 +2,7 @@
 -- Automatically downloads ComputerCraft programs to a computer
 
 urls = {
-    {"Start",         "https://raw.githubusercontent.com/LichtMarv/Britannia/master/lua/Start.lua"}--,
-  --{"Installer",     "https://raw.githubusercontent.com/???/???.lua"}
+    {"Start",         "https://raw.githubusercontent.com/LichtMarv/Britannia/master/lua/Start.lua"}
 }
 if not(fs.exists("Start")) then
   file = fs.open("startup.lua", "w")
@@ -13,7 +12,6 @@ if not(fs.exists("Start")) then
 end
 
 function download(name, url)
-  print("Updating " .. name)
  
   request = http.get(url)
   data = request.readAll()
@@ -28,8 +26,6 @@ function download(name, url)
     file.write(data)
     file.close()
   end
- 
-  print("Successfully downloaded " .. name .. "\n")
 end
 
 for key, value in ipairs(urls) do
