@@ -96,9 +96,10 @@ term.setTextColor(colors.lightBlue)
 print("Aktualisierun der Nutzerdaten")
 local response = http.get("http://purplepenguin.ddns.net:8500/cct/info/"..SessionKey.."/")
 local content = response.readAll()
-print(content)
-if (content=="USER DOESNT EXIST! Was the user deleted?") then
+if (content=="USER DOESNT EXIST!") then
     SessionKey=nil
+    term.setTextColor(colors.red)
+    print("User Doest Exist! Was the user deleted?")
     os.sleep(5)
     fs.delete("saves")
     os.reboot()
