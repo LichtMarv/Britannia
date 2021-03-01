@@ -105,7 +105,11 @@ if (content=="USER DOESNT EXIST!") then
 end
 content=json.decode(content)
 if  not (content.username==nil) then
-    os.setComputerLabel("Computer von "..content.username)
+    local deviceName = "Computer"
+    if (IsTablet) then
+        deviceName = "Tablat"
+    end
+    os.setComputerLabel(deviceName.." von "..content.username)
 end
 term.clear()
 term.setBackgroundColor(colours.blue)
