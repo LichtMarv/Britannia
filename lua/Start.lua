@@ -121,7 +121,6 @@ RAM.IsTablat = IsTablat
 file.write(RAM)
 file.close()
 
-
 local width, height = term.getSize()
 term.clear()
 paintutils.drawFilledBox(0, 0, width, height, colors.blue)
