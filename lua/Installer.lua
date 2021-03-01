@@ -10,7 +10,7 @@ if (fs.exists("saves/.config")) then
   local file = fs.open("saves/.config", "r")
   RAM = file.readAll()
   file.close()
-else
+end
 
 
     local file = fs.open("saves/.config","w")

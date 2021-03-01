@@ -125,6 +125,16 @@ app.get("/user", async(req, res) => {
     }
 });
 
+app.get("/user/get", async(req, res) => {
+    try {
+        let users = await usersdb.find();
+        res.json(users)
+    } catch (error){
+        console.error(error)
+
+    }
+});
+
 app.get("/users/fix", async(req, res) => {
     try {
         let users = await usersdb.find({});
