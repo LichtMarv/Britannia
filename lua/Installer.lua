@@ -32,7 +32,6 @@ end
 for key, value in ipairs(urls) do
     download(unpack(value))
 end
-os.sleep(5)
 if not(fs.exists("Installer")) then
   shell.run("Start")
 end
