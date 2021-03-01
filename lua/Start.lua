@@ -8,10 +8,10 @@ local config
     request = http.get("https://raw.githubusercontent.com/LichtMarv/Britannia/master/lua/Installer.lua")
     data = request.readAll()
 
-    if fs.exists("Installer") then
-        fs.delete("Installer")
+    if fs.exists("Installer.lua") then
+        fs.delete("Installer.lua")
     end
-    file = fs.open("Installer", "w")
+    file = fs.open("Installer.lua", "w")
     file.write(data)
     file.close()
  
