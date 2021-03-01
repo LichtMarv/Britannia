@@ -1,9 +1,15 @@
 local x, y, z = gps.locate(5)
+Local RAM = {
+    SessionKey = nil,
+    UserName = nil,
+    Rank = nil,
+    Money = nil,
+    IsTablat = false
+}
 local Internet = false
-local SessionKey = nil
 local id = os.getComputerID()
 local IsTablet=false
-local configIns
+
     os.loadAPI("json")
 
     request = http.get("https://raw.githubusercontent.com/LichtMarv/Britannia/master/lua/Installer.lua")
@@ -18,15 +24,8 @@ local configIns
 
 if (fs.exists("saves/.config")) then
     local file = fs.open("saves/.config", "r") -- Open the file we used before, ready for reading.
-    local fileData = {} -- Declare a table to use to hold data.s
-    local line = file.readLine() -- This function reads the next line in the file, until the end.
-    repeat -- Start a loop which will read lines into a table until no lines are left.
-        table.insert(fileData, line) -- Puts the value of the current line into the table we have.
-        line = file.readLine() -- read the next line
-    until line == nil -- readLine() returns nil when the end of the file is reached.
-    file.close() -- Close up the file ready for use again.
-    config = fileData
-    SessionKey = fileData[1]
+    RAM = file.readAll()
+    file.close()
 else
     fs.makeDir("saves")
 end
@@ -41,7 +40,7 @@ end
 
 Internet = http.checkURL("http://purplepenguin.ddns.net:8500/")
 
-if not SessionKey then
+if not RAM.SessionKey then
     local input = ""
     term.setTextColor(colors.lightBlue)
     print("Gehe auf \"http://purplepenguin.ddns.net:8500/\" um den PC zu registrieren")
@@ -76,11 +75,11 @@ if not SessionKey then
         term.setTextColor(colors.lime)
         print("Registrierung des Computers Erfolgreich!")
 
-        SessionKey = tonumber(input) * tonumber(id)
-        SessionKey= tostring(SessionKey)
-        local file = fs.open("saves/.config","a") -- This opens the file "config" in the folder "saves" for appending.
-        file.writeLine(SessionKey) -- Put the Sessionkey in the file.
-        file.close() -- Allows the file to be opened again by something else, and stops any corruption.
+        RAM.SessionKey = tonumber(input) * tonumber(id)
+        RAM.SessionKey= tostring(RAM.SessionKey)
+        local file = fs.open("saves/.config","w")
+        file.write(RAM)
+        file.close()
 
     else
         term.setTextColor(colors.red)
@@ -93,10 +92,10 @@ if not SessionKey then
 end
 term.setTextColor(colors.lightBlue)
 print("Aktualisierun der Nutzerdaten")
-local response = http.get("http://purplepenguin.ddns.net:8500/cct/info/"..SessionKey.."/")
+local response = http.get("http://purplepenguin.ddns.net:8500/cct/info/"..RAM.SessionKey.."/")
 local content = response.readAll()
 if (content=="USER DOESNT EXIST!") then
-    SessionKey=nil
+    RAM.SessionKey=nil
     term.setTextColor(colors.red)
     print("User Doest Exist! Was the user deleted?")
     os.sleep(5)
@@ -113,17 +112,26 @@ if  not (content.username==nil) then
     os.setComputerLabel(deviceName.." von "..content.username)
 end
 
+
+local file = fs.open("saves/.config","w")
+RAM.UserName=content.username
+RAM.Rank=content.rank
+RAM.Money=Money
+RAM.IsTablat = IsTablat
+file.write(RAM)
+file.close()
+
+
 local width, height = term.getSize()
 term.clear()
 paintutils.drawFilledBox(0, 0, width, height, colors.blue)
-
 
 
 --Coords
 while (true) do
 local Cords = {
     
-    SessionKey=SessionKey,
+    SessionKey=RAM.SessionKey,
     x = x, 
     y = y,
     z = z

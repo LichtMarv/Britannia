@@ -37,4 +37,40 @@ router.post("/changePwd", async (req, res) => {
     }
 })
 
+router.post("/add", async (req, res) => {
+    try {
+        let body = req.body
+        let user = await usersdb.findOne({ username: body.username})
+        if (user.password == body.password) {
+            await usersdb.insert({ username: body.nusername,password: body.npassword, money: 0, token:0 })
+            res.json({ suc: "true" })
+        }
+        else {
+            console.log("WORNG PASSWORD ...")
+            res.json({ suc: "false" })
+        }
+    } catch (error){
+        res.json({ suc: "false" })
+        console.log(error)
+    }
+})
+
+router.get("/get", async (req, res) => {
+    try {
+        let body = req.body
+        let user = await usersdb.findOne({ username: body.username})
+        if (user.password == body.password) {
+            await usersdb.insert({ username: body.nusername,password: body.npassword, money: 0, token:0 })
+            res.json({ suc: "true" })
+        }
+        else {
+            console.log("WORNG PASSWORD ...")
+            res.json({ suc: "false" })
+        }
+    } catch (error){
+        res.json({ suc: "false" })
+        console.log(error)
+    }
+})
+
 module.exports = router;

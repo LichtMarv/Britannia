@@ -125,6 +125,34 @@ app.get("/user", async(req, res) => {
     }
 });
 
+app.get("/users/fix", async(req, res) => {
+    try {
+        let users = await usersdb.find({});
+        console.log(users)
+        users.forEach(user => {
+            console.log(user.username)
+            if(user.username == null) {
+                usersdb.remove({_id:user._id})
+            }
+            if(user.rank == null) {
+                usersdb.update({_id:user._id},{ $set: { rank: "user" } })
+            }
+            if(user.token == null) {
+                usersdb.update({_id:user._id},{ $set: { token: 0 } })
+            }
+            if(user.money == null) {
+                usersdb.update({_id:user._id},{ $set: { money: 0 } })
+            }
+        });
+        users = await usersdb.find({});
+        console.log(users)
+        res.json(users)
+    } catch (error){
+        console.error(error)
+
+    }
+});
+
 app.put("/user/:id", async(req, res) => {
     try {
         const { id } = req.params;

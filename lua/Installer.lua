@@ -2,14 +2,30 @@
 -- Automatically downloads ComputerCraft programs to a computer
 
 urls = {
-    {"Start",         "https://raw.githubusercontent.com/LichtMarv/Britannia/master/lua/Start.lua"}
+    {"Start","https://raw.githubusercontent.com/LichtMarv/Britannia/master/lua/Start.lua"}
 }
+local RAM
 
+if (fs.exists("saves/.config")) then
+  local file = fs.open("saves/.config", "r")
+  RAM = file.readAll()
+  file.close()
+else
+
+
+    local file = fs.open("saves/.config","w")
+    if(fs.exists("startup"))then 
     fs.delete("startup")
+    end
+
     file = fs.open("startup", "w")
-    file.write("shell.run(\"Installer\") \n")
-    file.write("shell.run(\"Start\")\n")
-    --file.write("os.reboot()")
+    file.writeLine("shell.run(\"Installer\")")
+    file.writeLine("shell.run(\"Start\")")
+    if not(RAM==nil) then
+      if not (RAM.Rank=="admin") then
+        file.write("os.reboot()")
+      end
+    end
     file.close()
 
 function download(name, url)
@@ -34,9 +50,4 @@ for key, value in ipairs(urls) do
 end
 if not(fs.exists("Installer")) then
   shell.run("Start")
-end
-
-
-if (fs.exists("saves/config")) then
-  shell.run("rename saves/config saves/.config")
 end
