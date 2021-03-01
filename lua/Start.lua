@@ -87,6 +87,7 @@ if not SessionKey then
         term.setTextColor(colors.red)
         print("Registrierung des Computers Fehlgeschladen!")
         print("Bitte probiere es in ein paar Minuen noch mal")
+        fs.delete("saves")
         os.reboot()
     end
     print("")
@@ -96,8 +97,10 @@ print("Aktualisierun der Nutzerdaten")
 local response = http.get("http://purplepenguin.ddns.net:8500/cct/info/"..SessionKey.."/")
 local content = response.readAll()
 print(content)
-if (content=="USER DOESNT EXIST!") then
+if (content=="USER DOESNT EXIST! Was the user deleted?") then
     SessionKey=nil
+    os.sleep(5)
+    fs.delete("saves")
     os.reboot()
 end
 content=json.decode(content)
