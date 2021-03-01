@@ -45,6 +45,8 @@ app.get('/', async(req, res) => {
                 res.sendFile(path.join(__dirname + '/private/admin.html'));
             else if (page == "account")
                 res.sendFile(path.join(__dirname + '/private/account.html'));
+            else if (page == "account")
+                res.sendFile(path.join(__dirname + '/private/login.html'));
             else
                 res.sendFile(path.join(__dirname + '/private/index.html'));
 
@@ -74,6 +76,10 @@ app.get('/page/:pg', async(req, res) => {
     res.send()
 });
 
+app.get('/test', async(req, res) => {
+    res.sendFile("index.html")
+});
+
 // app.get('/login', function(req, res) {
 //     res.sendFile(path.join(__dirname + '/res/login.html'));
 // });
@@ -87,6 +93,7 @@ app.post('/login', async(req, res) => {
             console.log(userdata)
             await usersdb.update({ _id: userdata._id }, { $set: userdata })
             res.cookie("token", userdata["token"], { httpOnly: true })
+            res.cookie("page", "main", { httpOnly: true })
             console.log("user data correct");
             res.json({ auth: true, token: userdata["token"] });
             //res.sendFile(path.join(__dirname + '/private/index.html'));
@@ -169,10 +176,12 @@ app.put("/user/:id", async(req, res) => {
         const user = await usersdb.findOne({ _id: id });
         if (user) {
             const inserted = await usersdb.update({ _id: id }, { $set: req.body });
+            console.log("updated user !")
             res.json(inserted)
         }
-    } catch {
-        res.json({ "error": "WRON ID OR SOMETHING" })
+    } catch (error){
+        console.log(error)
+        res.json({ "error": "WRONG ID OR SOMETHING" })
 
     }
     res.send()

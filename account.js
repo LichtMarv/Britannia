@@ -8,8 +8,13 @@ router.get("/reg", async (req, res) => {
     let token = req.cookies.token;
     let user = await usersdb.findOne({ token: parseInt(token) })
     let key = Math.round(Math.random() * 899999999 + 100000000)
-    await usersdb.update({ _id: user._id }, { $set: { regKey: key } });
-    res.json({ key: key })
+    if(user) {
+        await usersdb.update({ _id: user._id }, { $set: { regKey: key } });
+        res.json({ key: key })
+    }else{
+        res.cookie("page","login")
+        res.redirect(req.originalUrl)
+    }
 })
 
 router.get("/key", async (req, res) => {

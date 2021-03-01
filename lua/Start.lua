@@ -1,5 +1,5 @@
 local x, y, z = gps.locate(5)
-local RAM = {
+local Config = {
     SessionKey = nil,
     UserName = nil,
     Rank = nil,
@@ -24,7 +24,7 @@ local IsTablet=false
 
 if (fs.exists("saves/.config")) then
     local file = fs.open("saves/.config", "r") -- Open the file we used before, ready for reading.
-    RAM = file.readAll()
+    Config = file.readAll()
     file.close()
 else
     fs.makeDir("saves")
@@ -40,7 +40,7 @@ end
 
 Internet = http.checkURL("http://purplepenguin.ddns.net:8500/")
 
-if not RAM.SessionKey then
+if not Config.SessionKey then
     local input = ""
     term.setTextColor(colors.lightBlue)
     print("Gehe auf \"http://purplepenguin.ddns.net:8500/\" um den PC zu registrieren")
@@ -75,10 +75,9 @@ if not RAM.SessionKey then
         term.setTextColor(colors.lime)
         print("Registrierung des Computers Erfolgreich!")
 
-        RAM.SessionKey = tonumber(input) * tonumber(id)
-        RAM.SessionKey= tostring(RAM.SessionKey)
+        Config.SessionKey = tostring(tonumber(input) * tonumber(id))
         local file = fs.open("saves/.config","w")
-        file.write(RAM)
+        file.write(Config)
         file.close()
 
     else
@@ -92,10 +91,10 @@ if not RAM.SessionKey then
 end
 term.setTextColor(colors.lightBlue)
 print("Aktualisierun der Nutzerdaten")
-local response = http.get("http://purplepenguin.ddns.net:8500/cct/info/"..RAM.SessionKey.."/")
+local response = http.get("http://purplepenguin.ddns.net:8500/cct/info/"..Config.SessionKey.."/")
 local content = response.readAll()
 if (content=="USER DOESNT EXIST!") then
-    RAM.SessionKey=nil
+    Config.SessionKey=nil
     term.setTextColor(colors.red)
     print("User Doest Exist! Was the user deleted?")
     os.sleep(5)
@@ -114,11 +113,11 @@ end
 
 
 local file = fs.open("saves/.config","w")
-RAM.UserName=content.username
-RAM.Rank=content.rank
-RAM.Money=Money
-RAM.IsTablat = IsTablat
-file.write(RAM)
+Config.UserName=content.username
+Config.Rank=content.rank
+Config.Money=Money
+Config.IsTablat = IsTablat
+file.write(Config)
 file.close()
 
 local width, height = term.getSize()
@@ -130,7 +129,7 @@ paintutils.drawFilledBox(0, 0, width, height, colors.blue)
 while (true) do
 local Cords = {
     
-    SessionKey=RAM.SessionKey,
+    SessionKey=Config.SessionKey,
     x = x, 
     y = y,
     z = z

@@ -1,14 +1,14 @@
 -- Update and Installer script
--- Automatically downloads ComputerCraft programs to a computer
+-- Automatically downloads ComputerCraft progConfigs to a computer
 
 urls = {
     {"Start","https://raw.githubusercontent.com/LichtMarv/Britannia/master/lua/Start.lua"}
 }
-local RAM
+local Config
 
 if (fs.exists("saves/.config")) then
   local file = fs.open("saves/.config", "r")
-  RAM = file.readAll()
+  Config = file.readAll()
   file.close()
 end
 
@@ -21,8 +21,8 @@ end
     file = fs.open("startup", "w")
     file.writeLine("shell.run(\"Installer\")")
     file.writeLine("shell.run(\"Start\")")
-    if not(RAM==nil) then
-      if not (RAM.Rank=="admin") then
+    if not(Config==nil) then
+      if not (Config.Rank=="admin") then
         file.write("os.reboot()")
       end
     end
