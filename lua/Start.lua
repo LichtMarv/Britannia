@@ -107,7 +107,7 @@ content=json.decode(content)
 if  not (content.username==nil) then
     local deviceName = "Computer"
     if (IsTablet) then
-        deviceName = "Tablat"
+        deviceName = "Tablet"
     end
     os.setComputerLabel(deviceName.." von "..content.username)
 end
