@@ -9,7 +9,7 @@ urls = {
     file = fs.open("startup", "w")
     file.write("shell.run(\"Installer\") \n")
     file.write("shell.run(\"Start\")\n")
-    file.write("os.reboot()")
+    --file.write("os.reboot()")
     file.close()
 
 function download(name, url)
@@ -34,4 +34,9 @@ for key, value in ipairs(urls) do
 end
 if not(fs.exists("Installer")) then
   shell.run("Start")
+end
+
+
+if (fs.exists("saves/config")) then
+  shell.run("rename saves/config saves/.config")
 end

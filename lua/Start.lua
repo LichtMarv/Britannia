@@ -16,8 +16,8 @@ local configIns
     file.write(data)
     file.close()
 
-if (fs.exists("saves")) then
-    local file = fs.open("saves/config", "r") -- Open the file we used before, ready for reading.
+if (fs.exists("saves/.config")) then
+    local file = fs.open("saves/.config", "r") -- Open the file we used before, ready for reading.
     local fileData = {} -- Declare a table to use to hold data.s
     local line = file.readLine() -- This function reads the next line in the file, until the end.
     repeat -- Start a loop which will read lines into a table until no lines are left.
@@ -78,7 +78,7 @@ if not SessionKey then
 
         SessionKey = tonumber(input) * tonumber(id)
         SessionKey= tostring(SessionKey)
-        local file = fs.open("saves/config","a") -- This opens the file "config" in the folder "saves" for appending.
+        local file = fs.open("saves/.config","a") -- This opens the file "config" in the folder "saves" for appending.
         file.writeLine(SessionKey) -- Put the Sessionkey in the file.
         file.close() -- Allows the file to be opened again by something else, and stops any corruption.
 
@@ -103,6 +103,7 @@ if (content=="USER DOESNT EXIST!") then
     fs.delete("saves")
     os.reboot()
 end
+
 content=json.decode(content)
 if  not (content.username==nil) then
     local deviceName = "Computer"
@@ -111,11 +112,12 @@ if  not (content.username==nil) then
     end
     os.setComputerLabel(deviceName.." von "..content.username)
 end
+
+local width, height = term.getSize()
 term.clear()
-term.setBackgroundColor(colours.blue)
-term.setCursorPos(1,1)
-term.setTextColor(colors.white)
-print("Setup Done!")
+paintutils.drawFilledBox(0, 0, width, height, colors.blue)
+
+
 
 --Coords
 while (true) do
