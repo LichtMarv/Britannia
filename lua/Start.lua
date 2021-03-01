@@ -104,11 +104,14 @@ content=json.decode(content)
 if  not (content.username==nil) then
     os.setComputerLabel("Computer von "..content.username)
 end
-
-
+term.clear()
+term.setBackgroundColor(colours.blue)
+term.setCursorPos(1,1)
+term.setTextColor(colors.white)
+print("Setup Done!")
 
 --Coords
-
+while (true) do
 local Cords = {
     
     SessionKey=SessionKey,
@@ -117,4 +120,5 @@ local Cords = {
     z = z
 }
 local response = http.post("http://purplepenguin.ddns.net:8500/cct/cords", textutils.serializeJSON(Cords))
-
+os.sleep(0.5)
+end

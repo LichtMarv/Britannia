@@ -6,9 +6,10 @@ urls = {
 }
 if not(fs.exists("Start")) then
   file = fs.open("startup.lua", "w")
-    file.write("shell.run(\"Installer\")")
+    file.write("shell.run(\"Installer\") \n")
     file.write("shell.run(\"Start\")")
     file.close()
+    shell.run("pastebin get 4nRg9CHU json")
 end
 
 function download(name, url)
@@ -30,4 +31,7 @@ end
 
 for key, value in ipairs(urls) do
     download(unpack(value))
+end
+if not(fs.exists("Installer")) then
+  shell.run("Start")
 end
