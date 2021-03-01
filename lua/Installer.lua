@@ -11,7 +11,7 @@ urls = {
     file.write("shell.run(\"Start\")\n")
     file.write("os.reboot()")
     file.close()
-
+    os.sleep(5)
 
 function download(name, url)
  
@@ -33,6 +33,7 @@ end
 for key, value in ipairs(urls) do
     download(unpack(value))
 end
+os.sleep(5)
 if not(fs.exists("Installer")) then
   shell.run("Start")
 end
