@@ -5,13 +5,12 @@ urls = {
     {"Start",         "https://raw.githubusercontent.com/LichtMarv/Britannia/master/lua/Start.lua"}
 }
 
-  fs.delete("startup")
-  file = fs.open("startup", "w")
+    fs.delete("startup")
+    file = fs.open("startup", "w")
     file.write("shell.run(\"Installer\") \n")
     file.write("shell.run(\"Start\")\n")
     file.write("os.reboot()")
     file.close()
-    os.sleep(5)
 
 function download(name, url)
  

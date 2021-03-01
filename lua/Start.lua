@@ -4,7 +4,7 @@ local SessionKey = nil
 local id = os.getComputerID()
 local IsTablet=false
 local configIns
-os.loadAPI("json")
+    os.loadAPI("json")
 
     request = http.get("https://raw.githubusercontent.com/LichtMarv/Britannia/master/lua/Installer.lua")
     data = request.readAll()
@@ -15,7 +15,6 @@ os.loadAPI("json")
     file = fs.open("Installer", "w")
     file.write(data)
     file.close()
-    os.sleep(5)
 
 if (fs.exists("saves")) then
     local file = fs.open("saves/config", "r") -- Open the file we used before, ready for reading.
