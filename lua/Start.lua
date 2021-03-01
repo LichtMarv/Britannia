@@ -1,5 +1,5 @@
 local x, y, z = gps.locate(5)
-Local RAM = {
+local RAM = {
     SessionKey = nil,
     UserName = nil,
     Rank = nil,
