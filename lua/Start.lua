@@ -3,15 +3,16 @@ local Internet = false
 local SessionKey = nil
 local id = os.getComputerID()
 local IsTablet=false
-local config
+local configIns
+os.loadAPI("json")
 
     request = http.get("https://raw.githubusercontent.com/LichtMarv/Britannia/master/lua/Installer.lua")
     data = request.readAll()
 
-    if fs.exists("Installer.lua") then
-        fs.delete("Installer.lua")
+    if fs.exists("Installer") then
+        fs.delete("Installer")
     end
-    file = fs.open("Installer.lua", "w")
+    file = fs.open("Installer", "w")
     file.write(data)
     file.close()
  
