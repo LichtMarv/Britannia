@@ -1,9 +1,9 @@
 local x, y, z = gps.locate(5)
 local Config = {
-    SessionKey = nil,
-    UserName = nil,
-    Rank = nil,
-    Money = nil,
+    SessionKey = "",
+    UserName = "",
+    Rank = "",
+    Money = 0,
     IsTablat = false
 }
 local Internet = false
