@@ -76,16 +76,18 @@ if not Config.SessionKey then
         print("Registrierung des Computers Erfolgreich!")
         os.sleep(1)
         Config.SessionKey = tostring(tonumber(input) * tonumber(id))
+        print(Config.SessionKey)
         local file = fs.open("saves/.config","w")
         file.write(Config)
         file.close()
-        os.sleep(1)
+        print(textutils.serialiseJSON(Config))
+        os.sleep(4)
 
     else
         term.setTextColor(colors.red)
         print("Registrierung des Computers Fehlgeschladen!")
         print("Bitte probiere es in ein paar Minuen noch mal")
-        fs.delete("saves")
+        --fs.delete("saves")
         os.sleep(3)
         os.reboot()
     end
@@ -96,11 +98,11 @@ print("Aktualisierun der Nutzerdaten")
 local response = http.get("http://purplepenguin.ddns.net:8500/cct/info/"..Config.SessionKey.."/")
 local content = response.readAll()
 if (content=="USER DOESNT EXIST!") then
-    Config.SessionKey=nil
+    --Config.SessionKey=nil
     term.setTextColor(colors.red)
     print("Benutzer Existiert nicht - Wurde er gelöscht?")
     os.sleep(5)
-    fs.delete("saves")
+    --fs.delete("saves")
     os.reboot()
 end
 
