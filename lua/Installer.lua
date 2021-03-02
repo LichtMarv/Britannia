@@ -12,8 +12,6 @@ if (fs.exists("saves/.config")) then
   file.close()
 end
 
-
-    local file = fs.open("saves/.config","w")
     if(fs.exists("startup"))then 
     fs.delete("startup")
     end
@@ -23,7 +21,7 @@ end
     file.writeLine("shell.run(\"Start\")")
     if not(Config==nil) then
       if not (Config.Rank=="admin") then
-        file.write("os.reboot()")
+       -- file.write("os.reboot()")
       end
     end
     file.close()
