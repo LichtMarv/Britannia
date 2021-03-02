@@ -77,7 +77,7 @@ app.get('/page/:pg', async(req, res) => {
 });
 
 app.get('/test', async(req, res) => {
-    res.sendFile("index.html")
+    res.sendFile(__dirname + "/private/index.html")
 });
 
 // app.get('/login', function(req, res) {
@@ -91,7 +91,7 @@ app.post('/login', async(req, res) => {
         if (userdata.password == req.body.password) {
             userdata["token"] = Math.round(Math.random() * 89999 + 10000)
             console.log(userdata)
-            await usersdb.update({ _id: userdata._id }, { $set: userdata })
+            await usersdb.update({ _id: userdata._id }, { $set: {token:userdata.token} })
             res.cookie("token", userdata["token"], { httpOnly: true })
             res.cookie("page", "main", { httpOnly: true })
             console.log("user data correct");

@@ -74,17 +74,19 @@ if not Config.SessionKey then
     if (worked == "true") then
         term.setTextColor(colors.lime)
         print("Registrierung des Computers Erfolgreich!")
-
+        os.sleep(1)
         Config.SessionKey = tostring(tonumber(input) * tonumber(id))
         local file = fs.open("saves/.config","w")
         file.write(Config)
         file.close()
+        os.sleep(1)
 
     else
         term.setTextColor(colors.red)
         print("Registrierung des Computers Fehlgeschladen!")
         print("Bitte probiere es in ein paar Minuen noch mal")
         fs.delete("saves")
+        os.sleep(3)
         os.reboot()
     end
     print("")
@@ -96,7 +98,7 @@ local content = response.readAll()
 if (content=="USER DOESNT EXIST!") then
     Config.SessionKey=nil
     term.setTextColor(colors.red)
-    print("User Doest Exist! Was the user deleted?")
+    print("Benutzer Existiert nicht - Wurde er gelöscht?")
     os.sleep(5)
     fs.delete("saves")
     os.reboot()
