@@ -53,9 +53,9 @@ router.get("/info/:sk", async(req, res) => {
         if (user) {
             res.send(JSON.stringify({ username: user.username, rank: user.rank, money: user.money }))
         } else
-            res.send("USER DOESNT EXIST!")
+            res.send(JSON.stringify({err:"USER DOESNT EXIST!"}))
     } catch {
-
+        res.send(JSON.stringify({err:"ERROR"}))
     }
 });
 module.exports = router;

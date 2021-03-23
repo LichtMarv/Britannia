@@ -1,6 +1,6 @@
 var express = require('express');
 const cookieParser = require('cookie-parser');
-const db = require("monk")("britannia:britannia@server:8550/britannia");
+const db = require("monk")("britannia:britannia@purplepenguin.ddns.net:8550/britannia");
 const usersdb = db.get('users');
 var app = express();
 var cct = require("./cct");

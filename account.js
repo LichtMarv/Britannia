@@ -1,5 +1,5 @@
 var express = require('express');
-const db = require("monk")("britannia:britannia@server:8550/britannia");
+const db = require("monk")("britannia:britannia@purplepenguin.ddns.net:8550/britannia");
 const usersdb = db.get('users');
 
 var router = express.Router();
