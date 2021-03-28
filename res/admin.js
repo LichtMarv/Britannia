@@ -26,7 +26,7 @@ function adduser(uname, ux, uy, uz) {
 function checkuser() {
     if(inp.value) {
         clearuser()
-        fetch("/admin/cords/"+inp.value)
+        fetch("admin/cords/"+inp.value)
         .then(response => response.json())
         .then(function(data) {
             if(data.suc)
@@ -36,7 +36,7 @@ function checkuser() {
     }
     else {
         clearuser()
-        fetch("/admin/cords")
+        fetch("admin/cords")
         .then(response => response.json())
         .then(function(data) {
             data.players.forEach(element => {

@@ -24,7 +24,7 @@
                 <li>
                     <div class="user-view">
                         <div class="background" style="background-color: #455a64"></div>
-                        <a><img class="circle" src="https://minotar.net/helm/MHF_Steve/100.png" onclick="accountLogin()"></a>
+                        <a><img class="circle" src="https://minotar.net/helm/MHF_Steve/100.png"></a>
                         <a><span class="white-text name" id="playername">Steve</span></a>
                         <a><span class="white-text email"
                                 style="font-size: 12px;" id="playeruuid">8667ba71-b85a-4004-af54-457a9734eed7</span></a>
@@ -34,7 +34,7 @@
                 <li>
                     <div class="divider"></div>
                 </li>
-                <li><a style="color: white" onclick="mainLogin()">Back</a></li>
+                <li><a style="color: white" href="../">Back</a></li>
             </ul>
         </div>
 
@@ -44,26 +44,22 @@
             <a class="waves-effect waves-light btn green" id="genButton" onclick="genKey()">generate new code</a>
             <br><br><br>
             <h2 class="white-text">Change Password</h2>
-            <div class="row">
-                <form class="col s12">
-                    <div class="row">
-                        <div class="input-field col s4">
-                            <input id="password_1" type="password" class="validate">
-                            <label for="password_1">New password</label>
-                            <a class="waves-effect waves-light btn green modal-trigger" href="#modal1">Change
-                                password</a>
-                        </div>
-                        <div class="input-field col s4">
-                            <input id="password_2" type="password" class="validate">
-                            <label for="password_2">Repeat password</label>
-                        </div>
-                        <div class="input-field col s4">
-                            <input id="password_3" type="password" class="validate">
-                            <label for="password_3">Old password</label>
-                        </div>
-                    </div>
-                </form>
-            </div>
+            <form>
+                <div class="input-field col s4">
+                    <input id="password_1" type="password" class="validate">
+                    <label for="password_1">New password</label>
+                    <a class="waves-effect waves-light btn green modal-trigger" href="#modal1">Change
+                        password</a>
+                </div>
+                <div class="input-field col s4">
+                    <input id="password_2" type="password" class="validate">
+                    <label for="password_2">Repeat password</label>
+                </div>
+                <div class="input-field col s4">
+                    <input id="password_3" type="password" class="validate">
+                    <label for="password_3">Old password</label>
+                </div>
+            </form>
 
             <div id="modal1" class="modal">
                 <div class="modal-content">
@@ -114,26 +110,19 @@
         }
 
         function genKey() {
-            fetch("/account/reg")
+            fetch("account/reg")
                 .then(response => response.json())
                 .then(function (data) {
                     kt.innerHTML = data.key.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
                 });
         }
         let kt = document.getElementById("keyText");
-        fetch("/account/key")
+        fetch("account/key")
             .then(response => response.json())
             .then(function (data) {
                 if(data.key)
                     kt.innerHTML = data.key.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
             });
-
-        function mainLogin() {
-            fetch("/page/main").then(function(data) {
-                console.log(data)
-                location.reload()
-            });
-        }
 
         function changePwd() {
             let old = document.querySelector("#password_3");
@@ -149,7 +138,7 @@
                 "new": newpw.value
             }
             console.log(form)
-            fetch("/account/changePwd", {
+            fetch("account/changePwd", {
                     method: "POST",
                     headers: {
                         'Accept': 'application/json, text/plain, */*',
@@ -165,7 +154,7 @@
 
         let playername = document.getElementById("playername");
         let playeruuid = document.getElementById("playeruuid");
-        fetch("/user")
+        fetch("api/uuid")
         .then(response => response.json())
         .then(function(data) {
             playername.innerHTML = data.username;

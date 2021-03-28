@@ -5,6 +5,7 @@ const usersdb = db.get('users');
 var app = express();
 var cct = require("./cct");
 var admin = require("./admin");
+var api = require("./api");
 var account = require("./account");
 var path = require('path');
 const fetch = require('node-fetch');
@@ -30,26 +31,15 @@ db.then(() => {
 app.get('/', async(req, res) => {
     try {
         let token = req.cookies.token;
-        let page = req.cookies.page;
         console.log("getting users with token : " + token)
         let user = await usersdb.findOne({ token: parseInt(token) })
-        if (!token) {
-            res.sendFile(path.join(__dirname + '/private/login.html'));
-        }
-        if (!user) {
-            console.log("no user with token !")
+        console.log(user)
+        if (user) {
+            console.log("INDEX")
+            res.sendFile(path.join(__dirname + '/private/index.html'));
         } else {
-            if (page == "main")
-                res.sendFile(path.join(__dirname + '/private/index.html'));
-            else if (page == "admin" && user.rank == "admin")
-                res.sendFile(path.join(__dirname + '/private/admin.html'));
-            else if (page == "account")
-                res.sendFile(path.join(__dirname + '/private/account.html'));
-            else if (page == "account")
-                res.sendFile(path.join(__dirname + '/private/login.html'));
-            else
-                res.sendFile(path.join(__dirname + '/private/index.html'));
-
+            console.log("LOGIN!")
+            res.redirect("/login")
         }
 
     } catch (error) {
@@ -59,30 +49,9 @@ app.get('/', async(req, res) => {
     //res.sendFile(path.join(__dirname + '/private / login.html '));
 });
 
-app.get('/page/:pg', async(req, res) => {
-    let token = req.cookies.token;
-    let user = await usersdb.findOne({ token: parseInt(token) })
-    let {pg} = req.params;
-    console.log(pg)
-    let ck = ""
-    if (pg == "main")
-        ck = "main"
-    else if (pg == "admin" && user.rank == "admin")
-        ck = "admin"
-    else if (pg == "account")
-        ck = "account"
-
-    res.cookie("page", ck, { httpOnly: true })
-    res.send()
+app.get('/login', function(req, res) {
+    res.sendFile(path.join(__dirname + '/private/login.html'));
 });
-
-app.get('/test', async(req, res) => {
-    res.sendFile(__dirname + "/private/index.html")
-});
-
-// app.get('/login', function(req, res) {
-//     res.sendFile(path.join(__dirname + '/res/login.html'));
-// });
 
 app.post('/login', async(req, res) => {
     console.log(req.body);
@@ -92,10 +61,9 @@ app.post('/login', async(req, res) => {
             userdata["token"] = Math.round(Math.random() * 89999 + 10000)
             console.log(userdata)
             await usersdb.update({ _id: userdata._id }, { $set: {token:userdata.token} })
-            res.cookie("token", userdata["token"], { httpOnly: true })
-            res.cookie("page", "main", { httpOnly: true })
+            res.cookie("token", userdata["token"], { httpOnly: true/*, domain: "purplepenguin.ddns.net:8600"*/ })
             console.log("user data correct");
-            res.json({ auth: true, token: userdata["token"] });
+            res.redirect("../")
             //res.sendFile(path.join(__dirname + '/private/index.html'));
         } else {
             res.json({ auth: false, error: "LOGIN DATA WRONG" });
@@ -111,84 +79,14 @@ app.post('/login', async(req, res) => {
     //res.sendFile(path.join(__dirname + '/res/login.html'));
 });
 
-app.get("/user", async(req, res) => {
-    try {
-        let user = await usersdb.findOne({ token: parseInt(req.cookies.token) });
-        if (user.uuid)
-            res.json({ username: user.username, id: user._id, playeruuid: user.uuid });
-        else {
-            fetch("https://api.mojang.com/users/profiles/minecraft/" + user.username)
-            .then(response => response.json())
-            .then(async function(data) {
-                await usersdb.update({ _id: user._id }, { $set: { uuid: data.id } });
-                res.json({ username: user.username, id: user._id, playeruuid: data.id })
-            });
-            
-
-        }
-    } catch (error){
-        console.error(error)
-
-    }
-});
-
-app.get("/user/get", async(req, res) => {
-    try {
-        let users = await usersdb.find();
-        res.json(users)
-    } catch (error){
-        console.error(error)
-
-    }
-});
-
-app.get("/users/fix", async(req, res) => {
-    try {
-        let users = await usersdb.find({});
-        console.log(users)
-        users.forEach(user => {
-            console.log(user.username)
-            if(user.username == null) {
-                usersdb.remove({_id:user._id})
-            }
-            if(user.rank == null) {
-                usersdb.update({_id:user._id},{ $set: { rank: "user" } })
-            }
-            if(user.token == null) {
-                usersdb.update({_id:user._id},{ $set: { token: 0 } })
-            }
-            if(user.money == null) {
-                usersdb.update({_id:user._id},{ $set: { money: 0 } })
-            }
-        });
-        users = await usersdb.find({});
-        console.log(users)
-        res.json(users)
-    } catch (error){
-        console.error(error)
-
-    }
-});
-
-app.put("/user/:id", async(req, res) => {
-    try {
-        const { id } = req.params;
-        const user = await usersdb.findOne({ _id: id });
-        if (user) {
-            const inserted = await usersdb.update({ _id: id }, { $set: req.body });
-            console.log("updated user !")
-            res.json(inserted)
-        }
-    } catch (error){
-        console.log(error)
-        res.json({ "error": "WRONG ID OR SOMETHING" })
-
-    }
-    res.send()
+app.get('/logout', function(req, res) {
+    res.cookie("token", 0, { httpOnly: true/*, domain: "purplepenguin.ddns.net:8600"*/ })
+    res.redirect("login")
 });
 
 app.use("/cct", cct)
 app.use("/admin", admin)
 app.use("/account", account)
+app.use("/api", api)
 
-app.listen(8500);
+app.listen(8600);

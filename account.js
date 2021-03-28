@@ -1,8 +1,26 @@
 var express = require('express');
 const db = require("monk")("britannia:britannia@purplepenguin.ddns.net:8550/britannia");
 const usersdb = db.get('users');
+var path = require('path');
 
 var router = express.Router();
+
+router.get("/", async (req,res) => {
+    try {
+        let token = req.cookies.token;
+        let user = await usersdb.findOne({ token: parseInt(token) })
+        console.log(user)
+        if (user) {
+            res.sendFile(path.join(__dirname + '/private/account.html'));
+        } else {
+            res.redirect("../login")
+        }
+
+    } catch (error) {
+        res.send("TEST")
+        console.error(error)
+    }
+})
 
 router.get("/reg", async (req, res) => {
     let token = req.cookies.token;

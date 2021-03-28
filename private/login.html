@@ -31,37 +31,39 @@
                             <input id="password" type="password" name="password" class="validate">
                             <label for="password">Password</label>
                         </div>
+                        <a class="waves-effect waves-light btn col s12 green" onclick="sendForm()">confirm</a>
                 </form>
-                <a class="waves-effect waves-light btn col s12 green" onclick="sendForm()">confirm</a>
+                
                 </div>
             </div>
         </div>
         <script>
             function sendForm() {
-                let name = document.querySelector("#username");
-                let password = document.querySelector("#password");
-                let form = {
-                    "username": name.value,
-                    "password": password.value
-                }
-                console.log(form)
-                fetch("login", {
-                        method: "POST",
-                        headers: {
-                            'Accept': 'application/json, text/plain, */*',
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(form)
-                    })
-                    .then(response => response.json())
-                    .then(function(data) {
-                        console.log(data)
-                        if (data.auth) {
-                            location.reload()
-                        } else {
-                            alert(data.error)
-                        }
-                    });
+                document.getElementById("login-form").submit()
+                // let name = document.querySelector("#username");
+                // let password = document.querySelector("#password");
+                // let form = {
+                //     "username": name.value,
+                //     "password": password.value
+                // }
+                // console.log(form)
+                // fetch("/login", {
+                //         method: "POST",
+                //         headers: {
+                //             'Accept': 'application/json, text/plain, */*',
+                //             'Content-Type': 'application/json'
+                //         },
+                //         body: JSON.stringify(form)
+                //     })
+                    // .then(response => response.json())
+                    // .then(function(data) {
+                    //     console.log(data)
+                    //     if (data.auth) {
+                    //         location.reload()
+                    //     } else {
+                    //         alert(data.error)
+                    //     }
+                    // });
             }
         </script>
 </body>

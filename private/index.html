@@ -22,13 +22,9 @@
                         style="font-size: 12px;" id="playeruuid">8667ba71-b85a-4004-af54-457a9734eed7</span></a>
             </div>
         </li>
-        <li><a href="#!" style="color: white">Minebey Prices</a></li>
-        <li>
-            <div class="divider"></div>
-        </li>
-        <li><a href="#!" style="color: white" onclick="AdminLogin()">Admin</a></li>
-        <li><a href="#!" style="color: white" onclick="accountLogin()">Account</a></li>
-        <li><a href="#!" style="color: white">Logout</a></li>
+        <li><a style="color: white" href="/admin">Admin</a></li>
+        <li><a style="color: white" href="/account">Account</a></li>
+        <li><div class="divider"></div><a style="color: white" href="/logout">Logout</a></li>
     </ul>
 
     <div id="prices">
@@ -45,14 +41,17 @@
                 <tr>
                     <td>512x Oak planks</td>
                     <td>4 Diamonds</td>
+                    <td><a class="waves-effect waves-light btn green">BUY</a></td>
                 </tr>
                 <tr>
                     <td>1x Computer</td>
                     <td>3 Diamonds</td>
+                    <td><a class="waves-effect waves-light btn green">BUY</a></td>
                 </tr>
                 <tr>
                     <td>1x Pocket Computer</td>
                     <td>1 Diamonds</td>
+                    <td><a class="waves-effect waves-light btn green">BUY</a></td>
                 </tr>
             </tbody>
         </table>
@@ -63,19 +62,7 @@
         });
         var playername = document.getElementById("playername");
         var playeruuid = document.getElementById("playeruuid");
-        async function AdminLogin() {
-            fetch("/page/admin").then(function(data) {
-                console.log(data)
-                location.reload()
-            });
-        }
-        function accountLogin() {
-            fetch("/page/account").then(function(data) {
-                console.log(data)
-                location.reload()
-            });
-        }
-        fetch("/user")
+        fetch("/api/uuid")
             .then(response => response.json())
             .then(function(data) {
                 playername.innerHTML = data.username;
