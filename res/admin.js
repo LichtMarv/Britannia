@@ -1,3 +1,8 @@
+
+import {MDCList} from "@material/list";
+const list = MDCList.attachTo(document.querySelector('.mdc-list'));
+list.wrapFocus = true;
+
 let table = document.getElementById("playertable");
 let inp = document.getElementById("autocomplete-input");
 
@@ -6,6 +11,9 @@ function clearuser() {
 }
 
 function adduser(uname, ux, uy, uz) {
+    
+    
+    
     let wrapper = document.createElement("tr");
     let user = document.createElement("td");
     user.appendChild(document.createTextNode(uname))

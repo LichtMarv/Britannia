@@ -35,10 +35,8 @@ app.get('/', async(req, res) => {
         let user = await usersdb.findOne({ token: parseInt(token) })
         console.log(user)
         if (user) {
-            console.log("INDEX")
             res.sendFile(path.join(__dirname + '/private/index.html'));
         } else {
-            console.log("LOGIN!")
             res.redirect("/login")
         }
 

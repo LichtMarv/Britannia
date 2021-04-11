@@ -15,10 +15,35 @@
             M.AutoInit();
         });
     </script>
+    <link rel="stylesheet/less" type="text/css" href="styles.less" />
+    <script src="less.js" type="text/javascript"></script>
 </head>
 
 <body style="background-color: #263238;">
-    <div class="row">
+
+    <aside class="mdc-drawer">
+        <div class="mdc-drawer__content">
+          <nav class="mdc-list">
+            <a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page">
+              <span class="mdc-list-item__ripple"></span>
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
+              <span class="mdc-list-item__text">Inbox</span>
+            </a>
+            <a class="mdc-list-item" href="#">
+              <span class="mdc-list-item__ripple"></span>
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
+              <span class="mdc-list-item__text">Outgoing</span>
+            </a>
+            <a class="mdc-list-item" href="#">
+              <span class="mdc-list-item__ripple"></span>
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
+              <span class="mdc-list-item__text">Drafts</span>
+            </a>
+          </nav>
+        </div>
+      </aside>
+
+    <!-- <div class="row">
         <div class="col s2">
             <ul id="slide-out" class="sidenav sidenav-fixed z-depth-3" style="background-color: #37474f;">
                 <li>
@@ -40,9 +65,9 @@
                 <li><a style="color: white" href="../">Back to main page</a></li>
                 <li><a style="color: white" href="logout">Log out</a></li>
             </ul>
-        </div>
+        </div> -->
 
-        <div id="power" class="col s10">
+       <!--  <div id="power" class="col s10">
             <div id="chart_div" style="width: 85%; height: 500px; position: fixed; left: 205px; top: -22px"></div>
             <a class="waves-effect waves-light btn green" style="position: fixed; left: 630px; top: 22px" onclick=""><i
                 class="material-icons">refresh</i></a>
@@ -188,7 +213,7 @@
             playername.innerHTML = data.username;
             playeruuid.innerHTML = data.playeruuid;
         });
-    </script>
+    </script> -->
     <script src="admin.js"></script>
 </body>
 
